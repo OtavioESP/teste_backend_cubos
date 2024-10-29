@@ -4,22 +4,28 @@ import {
   CreateDateColumn,
   PrimaryColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { People } from "./people";
 
-@Entity("people")
-export class People {
+// TODO: Implementar a TimeStampedClass
+// extends TimeStampedClass
+@Entity("account")
+export class Account {
   @PrimaryColumn("uuid")
   id: string;
 
   @Column()
-  name: string;
-
-  @Column({ unique: true })
-  document: string;
+  branch: number;
 
   @Column()
-  password: string;
+  account: string;
+
+  @ManyToOne(() => People)
+  @JoinColumn({ name: "owner_id" })
+  owner: string;
 
   @CreateDateColumn()
   createdAt: Date;
