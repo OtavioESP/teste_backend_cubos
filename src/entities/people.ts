@@ -1,14 +1,9 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { TimeStampedEntity } from "../helpers/TimeStampedEntity";
 
 @Entity("people")
-export class People {
+export class People extends TimeStampedEntity {
   @PrimaryColumn("uuid")
   id: string;
 
@@ -21,13 +16,8 @@ export class People {
   @Column()
   password: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   constructor() {
+    super();
     if (!this.id) {
       this.id = uuid();
     }

@@ -1,19 +1,10 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  PrimaryColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
-} from "typeorm";
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { People } from "./people";
+import { TimeStampedEntity } from "../helpers/TimeStampedEntity";
 
-// TODO: Implementar a TimeStampedClass
-// extends TimeStampedClass
 @Entity("account")
-export class Account {
+export class Account extends TimeStampedEntity {
   @PrimaryColumn("uuid")
   id: string;
 
@@ -27,13 +18,8 @@ export class Account {
   @JoinColumn({ name: "owner_id" })
   owner: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   constructor() {
+    super();
     if (!this.id) {
       this.id = uuid();
     }
