@@ -10,10 +10,10 @@ app.use(routes);
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("Data Source has been initialized!");
+    console.log("Banco de dados inicializado!");
   })
   .catch((error) => {
     console.error("Error during Data Source initialization:", error);
   });
 
-app.listen(3000, () => console.log("app runing"));
+app.listen(3000, () => console.log("Servidor rodando!"));

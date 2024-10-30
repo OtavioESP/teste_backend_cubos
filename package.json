@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",

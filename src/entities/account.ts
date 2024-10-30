@@ -9,14 +9,17 @@ export class Account extends TimeStampedEntity {
   id: string;
 
   @Column()
-  branch: number;
+  branch: string;
 
   @Column()
   account: string;
 
-  @ManyToOne(() => People)
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0.0 })
+  amount: number;
+
+  @ManyToOne(() => People, (people) => people.id)
   @JoinColumn({ name: "owner_id" })
-  owner: string;
+  owner: People;
 
   constructor() {
     super();

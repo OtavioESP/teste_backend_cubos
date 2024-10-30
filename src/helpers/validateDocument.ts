@@ -1,12 +1,14 @@
 import axios from "axios";
-
-const BASE_URL =
-  process.env.COMPLIANCE_ENDPOINT || "https://compliance-api.cubos.io";
+import {
+  COMPLIANCE_EMAIL,
+  COMPLIANCE_ENDPOINT,
+  COMPLIANCE_PASSWORD,
+} from "../config/constants";
 
 async function authCode() {
-  const res = await axios.post(`${BASE_URL}/auth/code`, {
-    email: "otavioemilio14@gmail.com",
-    password: "Ug8VD04cphdegd5DnRgG",
+  const res = await axios.post(`${COMPLIANCE_ENDPOINT}/auth/code`, {
+    email: COMPLIANCE_EMAIL,
+    password: COMPLIANCE_PASSWORD,
   });
 
   if (res.status === 200) {
@@ -16,7 +18,7 @@ async function authCode() {
 }
 
 async function authToken(code: string) {
-  const res = await axios.post(`${BASE_URL}/auth/token`, {
+  const res = await axios.post(`${COMPLIANCE_ENDPOINT}/auth/token`, {
     authCode: code,
   });
 
@@ -33,7 +35,7 @@ async function validate(
 ): Promise<boolean> {
   try {
     const res = await axios.post(
-      `${BASE_URL}/${type}/validate`,
+      `${COMPLIANCE_ENDPOINT}/${type}/validate`,
       { document },
       {
         headers: {
@@ -44,7 +46,7 @@ async function validate(
     );
 
     if (res.status === 200) {
-      //  por algum motivo a API retornava o tipo 1 e 2 como validos
+      //  Por algum motivo a API retornava o tipo 1 e 2 como validos
       return [1, 2].includes(res.data.data.status);
     }
   } catch (error) {
@@ -59,7 +61,6 @@ export async function checkDocumentValidity(
 ): Promise<boolean> {
   // Acessar isso uma vez para guardar o token na sessao no constructor do service
   // Sei que não é o ideal mas é uma checagem mais bruta do que o ideal
-
   const code = await authCode();
 
   const token = await authToken(code);

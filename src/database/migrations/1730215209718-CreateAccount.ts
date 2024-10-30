@@ -13,12 +13,19 @@ export class CreateAccount1730215209718 implements MigrationInterface {
           },
           {
             name: "branch",
-            type: "numeric",
+            type: "varchar",
           },
           {
             name: "account",
             type: "varchar",
             isUnique: true,
+          },
+          {
+            name: "amount",
+            type: "decimal",
+            precision: 10,
+            scale: 2,
+            default: "0.00",
           },
           {
             name: "owner_id",
