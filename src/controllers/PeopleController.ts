@@ -1,13 +1,5 @@
 import { Request, Response } from "express";
-import { PeopleServices } from "../../services/people/PeopleService";
-
-type PeopleResponse = {
-  id: string;
-  name: string;
-  document: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { PeopleServices } from "../services/people/PeopleService";
 
 export class PeopleController {
   private peopleServices: PeopleServices;
@@ -40,13 +32,6 @@ export class PeopleController {
       return res.status(400).json(result.message);
     }
 
-    const response: PeopleResponse = {
-      id: result.id,
-      name: result.name,
-      document: result.document,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-    };
-    return res.status(201).json(response);
+    return res.status(201).json(result);
   }
 }

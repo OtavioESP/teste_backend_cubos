@@ -1,14 +1,6 @@
 import { Response } from "express";
-import { AccountService } from "../../services/account/AccountService";
-import { AuthenticatedRequest } from "../../middlewares/AuthenticatedRequest";
-
-type AccountResponse = {
-  id: string;
-  branch: string;
-  account: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { AccountService } from "../services/account/AccountService";
+import { AuthenticatedRequest } from "../middlewares/AuthenticatedRequest";
 
 export class AccountController {
   private accountServices: AccountService;
@@ -31,14 +23,7 @@ export class AccountController {
       return res.status(400).json(result.message);
     }
 
-    const response: AccountResponse = {
-      id: result.id,
-      branch: result.branch,
-      account: result.account,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-    };
-    return res.status(200).json(response);
+    return res.status(200).json(result);
   }
 
   async listPersonAccounts(req: AuthenticatedRequest, res: Response) {

@@ -4,17 +4,11 @@ import AppDataSource from "../..";
 import { Repository } from "typeorm";
 import { checkDocumentValidity } from "../../helpers/validateDocument";
 import { JWT_SECRET } from "../../config/constants";
-
-type CreatePersonRequest = {
-  name: string;
-  document: string;
-  password: string;
-};
-
-type LoginRequest = {
-  document: string;
-  password: string;
-};
+import {
+  CreatePeopleResponse,
+  CreatePersonRequest,
+  LoginRequest,
+} from "./types";
 
 export class PeopleServices {
   private personRepository: Repository<People>;
@@ -43,7 +37,7 @@ export class PeopleServices {
     name,
     document,
     password,
-  }: CreatePersonRequest): Promise<People | Error> {
+  }: CreatePersonRequest): Promise<CreatePeopleResponse | Error> {
     const documentType = this.checkDocumentType(document);
     if (!documentType) {
       return new Error("Documento incompleto!");
@@ -75,7 +69,16 @@ export class PeopleServices {
     });
 
     await this.personRepository.save(newPerson);
-    return newPerson;
+
+    const newPersonResponse: CreatePeopleResponse = {
+      id: newPerson.id,
+      name: newPerson.name,
+      document: newPerson.document,
+      createdAt: newPerson.createdAt,
+      updatedAt: newPerson.updatedAt,
+    };
+
+    return newPersonResponse;
   }
 
   private checkDocumentType(document: string): string | null {

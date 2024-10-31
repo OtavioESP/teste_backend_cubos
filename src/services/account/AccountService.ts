@@ -2,25 +2,12 @@ import AppDataSource from "../..";
 import { Repository } from "typeorm";
 import { Account } from "../../entities/account";
 import { People } from "../../entities/people";
-
-type CreateAccountRequest = {
-  branch: string;
-  account: string;
-  ownerId: string;
-};
-
-type ListAccountRequest = {
-  ownerId: string;
-};
-
-type ListAccountResponse = {
-  id: string;
-  branch: string;
-  account: string;
-  owner: People;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import {
+  CreateAccountRequest,
+  CreateAccountResponse,
+  ListAccountRequest,
+  ListAccountResponse,
+} from "./types";
 
 export class AccountService {
   private accountRepository: Repository<Account>;
@@ -38,7 +25,7 @@ export class AccountService {
     branch,
     account,
     ownerId,
-  }: CreateAccountRequest): Promise<Account | Error> {
+  }: CreateAccountRequest): Promise<CreateAccountResponse | Error> {
     if (branch.length !== 3) {
       return new Error("Branch deve apenas conter 3 digitos!");
     }
@@ -61,10 +48,17 @@ export class AccountService {
       account,
       owner,
     });
-
     await this.accountRepository.save(newAccount);
 
-    return newAccount;
+    const response: CreateAccountResponse = {
+      id: newAccount.id,
+      branch: newAccount.branch,
+      account: newAccount.account,
+      createdAt: newAccount.createdAt,
+      updatedAt: newAccount.updatedAt,
+    };
+
+    return response;
   }
 
   async listAllAccountsByOwner({
@@ -74,12 +68,8 @@ export class AccountService {
       where: { owner: { id: ownerId } },
     });
 
-    if (!accounts) {
-      return new Error("Não existem vinculos!");
-    }
+    const response = accounts.map(({ amount, ...rest }) => rest);
 
-    const accountsWithoutAmount = accounts.map(({ amount, ...rest }) => rest);
-
-    return accountsWithoutAmount;
+    return response;
   }
 }
