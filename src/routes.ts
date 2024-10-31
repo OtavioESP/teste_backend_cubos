@@ -17,7 +17,7 @@ routes.post("/login", (req, res) => {
 });
 
 // ROTA DE VALIDACAO DO JWT
-routes.get("/people/protected", authMiddleware, (req, res) => {
+routes.get("/protected", authMiddleware, (req, res) => {
   res.json({ message: "Acesso permitido a rota protegida!" });
 });
 
@@ -37,30 +37,5 @@ routes.get("/accounts/:accountId/cards", authMiddleware, (req, res) => {
 routes.get("/cards", authMiddleware, (req, res) => {
   cardController.listPeopleCards(req, res);
 });
-
-// routes.get("/accounts/:accountId/cards", authMiddleware, async (req, res) => {
-//   const { accountId } = req.params;
-//   const page = parseInt(req.query.page as string, 10) || 1; // Default to page 1
-//   const limit = parseInt(req.query.limit as string, 10) || 10; // Default to 10 records per page
-
-//   try {
-//     const [cards, total] = await cardRepository.findAndCount({
-//       where: { account: { id: accountId } },
-//       take: limit,
-//       skip: (page - 1) * limit,
-//     });
-
-//     const totalPages = Math.ceil(total / limit);
-
-//     res.json({
-//       data: cards,
-//       page,
-//       totalPages,
-//       totalItems: total,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: "An error occurred while retrieving cards." });
-//   }
-// });
 
 export { routes };
