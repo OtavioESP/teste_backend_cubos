@@ -10,11 +10,7 @@ import {
 } from "./types";
 
 export class AccountService {
-  private accountRepository: Repository<Account>;
-
-  constructor() {
-    this.accountRepository = AppDataSource.getRepository(Account);
-  }
+  private accountRepository = AppDataSource.getRepository(Account);
 
   private checkAccountMask(account: string): boolean {
     const regex = /^\d{7}-\d{1}$/;

@@ -2,11 +2,7 @@ import { Request, Response } from "express";
 import { PeopleServices } from "../services/people/PeopleService";
 
 export class PeopleController {
-  private peopleServices: PeopleServices;
-
-  constructor() {
-    this.peopleServices = new PeopleServices();
-  }
+  private peopleServices = new PeopleServices();
 
   async login(req: Request, res: Response) {
     const { document, password } = req.body;

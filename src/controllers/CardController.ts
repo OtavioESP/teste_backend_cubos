@@ -3,17 +3,13 @@ import { AuthenticatedRequest } from "../middlewares/AuthenticatedRequest";
 import { CardService } from "../services/card/CardService";
 
 export class CardController {
-  private cardServices: CardService;
-
-  constructor() {
-    this.cardServices = new CardService();
-  }
+  private cardService = new CardService();
 
   async createCard(req: AuthenticatedRequest, res: Response) {
     const { accountId } = req.params;
     const { type, number, cvv } = req.body;
 
-    const result = await this.cardServices.createCard({
+    const result = await this.cardService.createCard({
       type,
       number,
       cvv,
@@ -29,7 +25,7 @@ export class CardController {
 
   async listAccountCards(req: AuthenticatedRequest, res: Response) {
     const { accountId } = req.params;
-    const results = await this.cardServices.listAllCardsByAccount({
+    const results = await this.cardService.listAllCardsByAccount({
       accountId,
     });
 
@@ -41,5 +37,21 @@ export class CardController {
 
   async listPeopleCards(req: AuthenticatedRequest, res: Response) {
     const ownerId = req.user["id"];
+    const currentPage = parseInt(req.query.currentPage as string, 10) || 1;
+    const itemsPerPage = parseInt(req.query.itemsPerPage as string, 10) || 10;
+    // page = page
+    // limit = record per page
+    try {
+      const result = await this.cardService.listAllCardsByUser(
+        ownerId,
+        currentPage,
+        itemsPerPage,
+      );
+      res.json(result);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving cards." });
+    }
   }
 }

@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { People } from "../../entities/people";
 import AppDataSource from "../..";
-import { Repository } from "typeorm";
 import { checkDocumentValidity } from "../../helpers/validateDocument";
 import { JWT_SECRET } from "../../config/constants";
 import {
@@ -11,11 +10,7 @@ import {
 } from "./types";
 
 export class PeopleServices {
-  private personRepository: Repository<People>;
-
-  constructor() {
-    this.personRepository = AppDataSource.getRepository(People);
-  }
+  private personRepository = AppDataSource.getRepository(People);
 
   private generateToken(person: People): string {
     return jwt.sign({ id: person.id }, JWT_SECRET, { expiresIn: "5h" });

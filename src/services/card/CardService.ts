@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import AppDataSource from "../..";
 import { Card } from "../../entities/card";
 import {
@@ -9,11 +9,7 @@ import {
 import { Account } from "../../entities/account";
 
 export class CardService {
-  private cardRepository: Repository<Card>;
-
-  constructor() {
-    this.cardRepository = AppDataSource.getRepository(Card);
-  }
+  private cardRepository = AppDataSource.getRepository(Card);
 
   private validateCardNumberFormat(cardNumber: string): boolean {
     const regex = /^\d{4} \d{4} \d{4} \d{4}$/;
@@ -85,5 +81,32 @@ export class CardService {
     });
 
     return cards;
+  }
+
+  async listAllCardsByUser(
+    ownerId: string,
+    currentPage: number,
+    itemsPerPage: number,
+  ) {
+    const accountRepository = AppDataSource.getRepository(Account);
+    const accounts = await accountRepository.find({
+      where: { owner: { id: ownerId } },
+      select: ["id"],
+    });
+    const accountIds = accounts.map((account) => account.id);
+
+    const [cards, _] = await this.cardRepository.findAndCount({
+      where: { account: { id: In(accountIds) } },
+      take: itemsPerPage,
+      skip: (currentPage - 1) * itemsPerPage,
+    });
+
+    return {
+      data: cards,
+      pagination: {
+        itemsPerPage: cards.length,
+        currentPage,
+      },
+    };
   }
 }

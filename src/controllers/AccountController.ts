@@ -3,17 +3,13 @@ import { AccountService } from "../services/account/AccountService";
 import { AuthenticatedRequest } from "../middlewares/AuthenticatedRequest";
 
 export class AccountController {
-  private accountServices: AccountService;
-
-  constructor() {
-    this.accountServices = new AccountService();
-  }
+  private accountService = new AccountService();
 
   async createAccount(req: AuthenticatedRequest, res: Response) {
     const { branch, account } = req.body;
     const ownerId = req.user["id"];
 
-    const result = await this.accountServices.createAccount({
+    const result = await this.accountService.createAccount({
       branch,
       account,
       ownerId,
@@ -29,7 +25,7 @@ export class AccountController {
   async listPersonAccounts(req: AuthenticatedRequest, res: Response) {
     const ownerId = req.user["id"];
 
-    const results = await this.accountServices.listAllAccountsByOwner({
+    const results = await this.accountService.listAllAccountsByOwner({
       ownerId,
     });
 
