@@ -35,4 +35,16 @@ export class AccountController {
 
     return res.status(200).json(results);
   }
+
+  async getAccountBalance(req: AuthenticatedRequest, res: Response) {
+    const { accountId } = req.params;
+
+    const result = await this.accountService.getBallance(accountId);
+
+    if (result instanceof Error) {
+      return res.status(400).json(result.message);
+    }
+
+    return res.status(200).json(result);
+  }
 }

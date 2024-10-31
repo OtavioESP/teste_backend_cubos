@@ -39,19 +39,17 @@ export class CardController {
     const ownerId = req.user["id"];
     const currentPage = parseInt(req.query.currentPage as string, 10) || 1;
     const itemsPerPage = parseInt(req.query.itemsPerPage as string, 10) || 10;
-    // page = page
-    // limit = record per page
-    try {
-      const result = await this.cardService.listAllCardsByUser(
-        ownerId,
-        currentPage,
-        itemsPerPage,
-      );
-      res.json(result);
-    } catch (error) {
-      res
-        .status(500)
-        .json({ error: "An error occurred while retrieving cards." });
+
+    const result = await this.cardService.listAllCardsByUser({
+      ownerId,
+      currentPage,
+      itemsPerPage,
+    });
+
+    if (result instanceof Error) {
+      return res.status(500).json(result.message);
     }
+
+    return res.status(200).json(result);
   }
 }

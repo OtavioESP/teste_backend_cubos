@@ -5,6 +5,7 @@ import {
   CreateCardRequest,
   CreateCardResponse,
   ListAccountCardRequest,
+  listAllCardsByUserRequest,
 } from "./types";
 import { Account } from "../../entities/account";
 
@@ -22,7 +23,7 @@ export class CardService {
     number,
     cvv,
   }: CreateCardRequest): Promise<CreateCardResponse | Error> {
-    const cards = await this.cardRepository.findOne({
+    const physicalCards = await this.cardRepository.findOne({
       where: { account: { id: accountId }, type: "physical" },
     });
 
@@ -30,7 +31,7 @@ export class CardService {
       return new Error("O tipo do cartão deve ser physical ou virtual!");
     }
 
-    if (cards && type === "physical") {
+    if (physicalCards && type === "physical") {
       return new Error("A conta em questão ja possúi um cartão físico!");
     }
 
@@ -38,6 +39,14 @@ export class CardService {
       return new Error(
         "Numero do cartão fora de padrão, tente XXXX XXXX XXXX XXXX.",
       );
+    }
+
+    const sameNumberCards = await this.cardRepository.find({
+      where: { number: number },
+    });
+
+    if (sameNumberCards.length > 0) {
+      return new Error("Não devem existir cartões com mesmo número!");
     }
 
     if (cvv.length != 3) {
@@ -83,11 +92,11 @@ export class CardService {
     return cards;
   }
 
-  async listAllCardsByUser(
-    ownerId: string,
-    currentPage: number,
-    itemsPerPage: number,
-  ) {
+  async listAllCardsByUser({
+    ownerId,
+    currentPage,
+    itemsPerPage,
+  }: listAllCardsByUserRequest) {
     const accountRepository = AppDataSource.getRepository(Account);
     const accounts = await accountRepository.find({
       where: { owner: { id: ownerId } },
@@ -99,10 +108,16 @@ export class CardService {
       where: { account: { id: In(accountIds) } },
       take: itemsPerPage,
       skip: (currentPage - 1) * itemsPerPage,
+      order: { createdAt: "DESC" },
     });
 
+    const formatedCards = cards.map((card) => ({
+      ...card,
+      number: card.number.slice(-4),
+    }));
+
     return {
-      data: cards,
+      data: formatedCards,
       pagination: {
         itemsPerPage: cards.length,
         currentPage,

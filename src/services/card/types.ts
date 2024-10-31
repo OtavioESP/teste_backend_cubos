@@ -17,3 +17,9 @@ export type CreateCardResponse = {
 export type ListAccountCardRequest = {
   accountId: string;
 };
+
+export type listAllCardsByUserRequest = {
+  ownerId: string;
+  currentPage: number;
+  itemsPerPage: number;
+};

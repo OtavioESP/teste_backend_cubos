@@ -46,7 +46,7 @@ export class AccountService {
     });
     await this.accountRepository.save(newAccount);
 
-    const response: CreateAccountResponse = {
+    const newAccountResponse: CreateAccountResponse = {
       id: newAccount.id,
       branch: newAccount.branch,
       account: newAccount.account,
@@ -54,7 +54,7 @@ export class AccountService {
       updatedAt: newAccount.updatedAt,
     };
 
-    return response;
+    return newAccountResponse;
   }
 
   async listAllAccountsByOwner({
@@ -64,8 +64,20 @@ export class AccountService {
       where: { owner: { id: ownerId } },
     });
 
-    const response = accounts.map(({ amount, ...rest }) => rest);
+    const accountsResponse = accounts.map(({ amount, ...rest }) => rest);
 
-    return response;
+    return accountsResponse;
+  }
+
+  async getBallance(accountId: string): Promise<number | Error> {
+    const account = await this.accountRepository.findOne({
+      where: { id: accountId },
+    });
+
+    if (!account) {
+      return new Error("Conta inexistente!");
+    }
+
+    return Math.abs(account.amount);
   }
 }

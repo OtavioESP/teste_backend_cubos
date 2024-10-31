@@ -10,6 +10,7 @@ import {
   DATABASE_PORT,
   DATABASE_USER,
 } from "./config/constants";
+import { Transaction } from "./entities/transaction";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -20,7 +21,7 @@ const AppDataSource = new DataSource({
   database: DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: [People, Account, Card],
+  entities: [People, Account, Card, Transaction],
   migrations: ["src/database/migrations/*{.ts,.js}"],
 });
 
