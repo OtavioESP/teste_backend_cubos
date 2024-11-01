@@ -30,7 +30,6 @@ Agora aplicando as migrations
 Para as variaveis de ambiente sugiro que utilize a mesma base de arquivo `.env`
 
 ```dotenv
-Copy code
 DATABASE_HOST=localhost
 DATABASE_USER="admin"
 DATABASE_PASSWORD="admin"
