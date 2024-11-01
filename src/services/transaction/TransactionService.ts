@@ -25,7 +25,6 @@ export class TransactionServices {
       } else {
         account.amount = Math.abs(account.amount) + Math.abs(value);
       }
-      console.log(account);
       await this.accountRepository.save(account);
       return true;
     } catch (error) {
@@ -85,7 +84,6 @@ export class TransactionServices {
       return new Error("Conta possui saldo insuficiente para essa retirada!");
     }
 
-    // Esse bloco simplesmente cria a trnasação, e depois insere o valor na conta
     const result = await this.createTransaction(
       type,
       description,

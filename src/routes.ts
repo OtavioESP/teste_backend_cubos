@@ -18,6 +18,11 @@ routes.post("/login", (req, res) => {
   peopleController.login(req, res);
 });
 
+// ROTA DE VALIDACAO DO JWT
+routes.get("/protected", authMiddleware, (req, res) => {
+  res.json({ message: "Acesso permitido a rota protegida!" });
+});
+
 routes.post("/accounts", authMiddleware, (req, res) => {
   accountController.createAccount(req, res);
 });
@@ -25,7 +30,7 @@ routes.get("/accounts", authMiddleware, (req, res) => {
   accountController.listPersonAccounts(req, res);
 });
 routes.get("/accounts/:accountId/balance", authMiddleware, (req, res) => {
-  accountController.listPersonAccounts(req, res);
+  accountController.getAccountBalance(req, res);
 });
 
 routes.post("/accounts/:accountId/cards", authMiddleware, (req, res) => {

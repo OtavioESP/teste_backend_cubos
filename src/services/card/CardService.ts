@@ -1,4 +1,4 @@
-import { In, Repository } from "typeorm";
+import { In } from "typeorm";
 import AppDataSource from "../..";
 import { Card } from "../../entities/card";
 import {

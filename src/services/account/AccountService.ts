@@ -1,5 +1,4 @@
 import AppDataSource from "../..";
-import { Repository } from "typeorm";
 import { Account } from "../../entities/account";
 import { People } from "../../entities/people";
 import {
@@ -69,7 +68,7 @@ export class AccountService {
     return accountsResponse;
   }
 
-  async getBallance(accountId: string): Promise<number | Error> {
+  async getBallance(accountId: string): Promise<object | Error> {
     const account = await this.accountRepository.findOne({
       where: { id: accountId },
     });
@@ -78,6 +77,6 @@ export class AccountService {
       return new Error("Conta inexistente!");
     }
 
-    return Math.abs(account.amount);
+    return {"balance": Math.abs(account.amount)}
   }
 }

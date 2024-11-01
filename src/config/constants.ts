@@ -2,7 +2,7 @@ import "dotenv/config";
 
 export const JWT_SECRET = process.env.SECRET_KEY || "teste_backend_cubos";
 export const COMPLIANCE_ENDPOINT =
-  process.env.BASE_URL || "https://compliance-api.cubos.io";
+  process.env.COMPLIANCE_ENDPOINT || "https://compliance-api.cubos.io";
 export const COMPLIANCE_EMAIL = process.env.COMPLIANCE_EMAIL || "";
 export const COMPLIANCE_PASSWORD = process.env.COMPLIANCE_PASSWORD || "";
 

@@ -13,7 +13,7 @@ AppDataSource.initialize()
     console.log("Banco de dados inicializado!");
   })
   .catch((error) => {
-    console.error("Error during Data Source initialization:", error);
+    console.error("Erro ao iniciar o Banco de Dados:", error);
   });
 
 app.listen(3000, () => console.log("Servidor rodando!"));
