@@ -15,8 +15,8 @@ Este repositório contém o código para uma aplicacao financeira destinada ao t
 
 1. **Clone o repositório**: 
    ```bash
-   git clone <repository_url>
-   cd finance-app
+   git clone <url>
+   cd teste_backend_cubos
 Com o docker rodando, execute na root do projeto.
 
 ```bash
