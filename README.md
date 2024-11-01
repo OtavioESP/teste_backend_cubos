@@ -22,6 +22,12 @@ Com o docker rodando, execute na root do projeto.
 ```bash
   docker-compose up -d
 ```
+
+Agora vamos instalar as dependencias
+```bash
+   npm install
+```
+
 Agora aplicando as migrations
 
 ```bash
@@ -52,7 +58,28 @@ Após completar acima, rode o projeto
 ```
 As migrations estao localizadas no src/database/migrations
 
-Caso queira criar uma rode
+Caso queira criar uma migration:
 ```bash
   npm run migration:create --name=NomeDaMigration
 ```
+
+Caso queira reverter uma migration:
+```bash
+   npm run migration:revert
+````
+
+## 🛠️ Testes unitarios
+
+Primeiro tenha certeza de que as dependencias foram instaladas, entao siga:
+
+Para limpar o cache
+```bash
+npx jest --clearCache
+```
+
+
+Agora para rodar os testes
+```bash
+npx jest
+````
+
